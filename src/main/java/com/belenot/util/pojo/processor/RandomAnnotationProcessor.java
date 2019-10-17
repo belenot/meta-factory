@@ -11,6 +11,7 @@ import com.belenot.util.pojo.annotation.Random;
 public class RandomAnnotationProcessor<T> implements PojoProcessor<T> {
     private List<FieldProcessor> fieldProcessorRegistry = new ArrayList<>();
     {
+        fieldProcessorRegistry.add(new DelegatingFieldProcessor());
         fieldProcessorRegistry.add(new IntegerFieldProcessor());
     }
 

@@ -5,11 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.belenot.util.pojo.processor.factory.PojoProcessorFactory;
-import com.belenot.util.pojo.processor.factory.RandomAnnotationProcessorFactory;
+import com.belenot.util.pojo.processor.DelegatingFieldProcessor.StubFieldProcessor;
+import com.belenot.util.pojo.processor.FieldProcessor;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.TYPE, ElementType.METHOD})
 public @interface Random {
-    Class<? extends PojoProcessorFactory> factory() default RandomAnnotationProcessorFactory.class;
+    Class<? extends FieldProcessor> processor() default StubFieldProcessor.class;
 }

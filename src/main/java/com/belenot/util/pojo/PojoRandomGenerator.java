@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.belenot.util.pojo.processor.factory.PojoProcessorFactory;
+import com.belenot.util.pojo.processor.factory.RandomAnnotationProcessorFactory;
 
 public class PojoRandomGenerator {
     private List<PojoProcessorFactory> pojoProcessorFactoryRegistry = new ArrayList<>();
@@ -12,10 +13,15 @@ public class PojoRandomGenerator {
         pojoProcessorFactoryRegistry.add(pojoProcessorFactory);
     }
 
+    {
+        addProcessorFactory(new RandomAnnotationProcessorFactory());
+    }
+
     public <T> T generate(Class<T> clazz) {
         T pojo = null;
         try {
-            pojo = clazz.getConstructor().newInstance();
+            //WHY I MUST PASS CLASS[0]?
+            pojo = clazz.getDeclaredConstructor(new Class<?>[0]).newInstance(new Object[0]);
         } catch (Exception exc) {
             System.err.println(exc);
         }
