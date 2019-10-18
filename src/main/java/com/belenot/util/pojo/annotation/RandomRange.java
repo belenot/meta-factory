@@ -7,11 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-public @interface RandomValues {
-    String[] value();
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.FIELD, ElementType.METHOD})
-    public @interface NumberValues {
-        double[] value();
-    }
+public @interface RandomRange {
+    double begin() default 0;
+    double end() default Double.MAX_VALUE;
 }

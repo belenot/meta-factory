@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 
 import com.belenot.util.pojo.annotation.Random;
 
-public class RandomAnnotationProcessor<T> implements PojoProcessor<T> {
+public class RandomAnnotationProcessor implements PojoProcessor {
     private List<FieldProcessor> fieldProcessorRegistry = new ArrayList<>();
     {
         fieldProcessorRegistry.add(new DelegatingFieldProcessor());
-        fieldProcessorRegistry.add(new IntegerFieldProcessor());
+        fieldProcessorRegistry.add(new NumberFieldProcessor());
     }
 
     @Override
-    public T process(T pojo, Class<T> clazz) {
+    public <T> T process(T pojo, Class<T> clazz) {
         List<Field> fields = Arrays.stream(clazz.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Random.class))
             .collect(Collectors.toList());
         for (Field field : fields) {
@@ -25,7 +25,7 @@ public class RandomAnnotationProcessor<T> implements PojoProcessor<T> {
         return pojo;
     }
 
-    private Field processField(Field field, T pojo) {
+    private Field processField(Field field, Object pojo) {
         for (FieldProcessor fieldProcessor : fieldProcessorRegistry) {
             if (fieldProcessor.support(field)) {
                 try {

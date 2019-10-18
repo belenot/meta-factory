@@ -1,21 +1,21 @@
 package com.belenot.util.pojo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.belenot.util.pojo.processor.factory.PojoProcessorFactory;
-import com.belenot.util.pojo.processor.factory.RandomAnnotationProcessorFactory;
+import com.belenot.util.pojo.processor.RandomAnnotationProcessor;
 
 public class PojoRandomGenerator {
-    private List<PojoProcessorFactory> pojoProcessorFactoryRegistry = new ArrayList<>();
+    // private List<PojoProcessor> pojoProcessorRegistry = new ArrayList<>();
 
-    public void addProcessorFactory(PojoProcessorFactory pojoProcessorFactory) {
-        pojoProcessorFactoryRegistry.add(pojoProcessorFactory);
+    // public void addProcessorFactory(PojoProcessorFactory pojoProcessorFactory) {
+    //     pojoProcessorRegistry.add(pojoProcessorFactory);
+    // }
+        // {
+        //     addProcessorFactory(new RandomAnnotationProcessorFactory());
+        // }
+    private RandomAnnotationProcessor pojoProcessor;
+    public PojoRandomGenerator() {
+        pojoProcessor = new RandomAnnotationProcessor();
     }
 
-    {
-        addProcessorFactory(new RandomAnnotationProcessorFactory());
-    }
 
     public <T> T generate(Class<T> clazz) {
         T pojo = null;
@@ -30,11 +30,6 @@ public class PojoRandomGenerator {
     }
 
     private <T> T processAnnotations(T pojo, Class<T> clazz) {
-        for (PojoProcessorFactory pojoProcessorFactory : pojoProcessorFactoryRegistry) {
-            if (pojoProcessorFactory.support(clazz)) {
-                pojoProcessorFactory.getProcessor(pojo, clazz).process(pojo, clazz);
-            }
-        }
-        return pojo;
+        return pojoProcessor.process(pojo, clazz);
     }
 }

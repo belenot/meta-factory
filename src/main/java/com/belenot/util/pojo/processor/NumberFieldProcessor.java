@@ -1,16 +1,17 @@
 package com.belenot.util.pojo.processor;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
-public class IntegerFieldProcessor implements FieldProcessor {
-    private IntValuesProcessor intValuesProcessor = new IntValuesProcessor();
+public class NumberFieldProcessor implements FieldProcessor {
+    private NumberValuesProcessor numberValuesProcessor = new NumberValuesProcessor();
 
     @Override
     public Field process(Object pojo, Field field) throws IllegalAccessException {
         boolean accessable = field.isAccessible();
         field.setAccessible(true);
-        if (intValuesProcessor.support(field)) {
-            intValuesProcessor.process(pojo, field);
+        if (numberValuesProcessor.support(field)) {
+            numberValuesProcessor.process(pojo, field);
         } else {
             setRandomInt(pojo, field);
         }
@@ -21,11 +22,18 @@ public class IntegerFieldProcessor implements FieldProcessor {
 
     @Override
     public boolean support(Field field) {
-        if (field.getType().equals(Integer.class) || field.getType().equals(int.class)) {
+        return isNumberType(field);
+    }
+
+    public static boolean isNumberType(Field field) {
+        List<Class<?>> supportedTypes = List.of(Integer.class, int.class, Double.class, double.class, Long.class, long.class);
+        if (supportedTypes.stream().anyMatch(type->type.equals(field.getType()))) {
             return true;
         }
         return false;
     }
+
+    
 
     private Field setRandomInt(Object pojo, Field field) throws IllegalAccessException {
         boolean accessible = field.isAccessible();

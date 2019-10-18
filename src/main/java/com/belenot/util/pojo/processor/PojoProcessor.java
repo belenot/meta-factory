@@ -1,9 +1,9 @@
 package com.belenot.util.pojo.processor;
 
 @FunctionalInterface
-public interface PojoProcessor<T> {
-    T process(T pojo, Class<T> clazz);
-    default T process(T pojo) {
+public interface PojoProcessor {
+    <T> T process(T pojo, Class<T> clazz);
+    default <T> T process(T pojo) {
         try {
             Class<T> clazz = (Class<T>)pojo.getClass();
             return process(pojo, clazz);

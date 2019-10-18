@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.annotation.Random;
-import com.belenot.util.pojo.annotation.RandomValues.IntValues;
+import com.belenot.util.pojo.annotation.RandomValues.NumberValues;
 import com.belenot.util.pojo.processor.FieldProcessor;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -25,18 +25,19 @@ public class PojoRandomGeneratorTest {
         // generator.addProcessorFactory(new RandomAnnotationProcessorFactory());
     }
 
+
     @Test
     public void test1() {
-        ExpPojo1 pojo = generator.generate(ExpPojo1.class);
+        ExpPojoIntValues pojo = generator.generate(ExpPojoIntValues.class);
         assertNotNull(pojo);
-        assertNotNull(pojo.getVal());
+        assertTrue(pojo.getVal() == 1 || pojo.getVal() == 2);
     }
 
     @Test
     public void test2() {
-        ExpPojo2 pojo = generator.generate(ExpPojo2.class);
+        ExpPojoDoubleValues pojo = generator.generate(ExpPojoDoubleValues.class);
         assertNotNull(pojo);
-        assertTrue(pojo.getVal() == 1 || pojo.getVal() == 2);
+        assertTrue(pojo.getVal() >= 1 && pojo.getVal() <= 2);
     }
 
     @Test
@@ -63,19 +64,32 @@ public class PojoRandomGeneratorTest {
 
     }
 
-    public static class ExpPojo2 {
-        public ExpPojo2() {
-        }
+    public static class ExpPojoIntValues {
 
         @Random
-        @IntValues({ 1, 2 })
-        private Integer val;
+        @NumberValues({1, 2 })
+        private int val;
 
         public int getVal() {
             return val;
         }
 
         public void setVal(int val) {
+            this.val = val;
+        }
+    }
+
+    public static class ExpPojoDoubleValues {
+
+        @Random
+        @NumberValues({1, 2 })
+        private Double val;
+
+        public Double getVal() {
+            return val;
+        }
+
+        public void setVal(Double val) {
             this.val = val;
         }
     }
