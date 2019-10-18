@@ -13,7 +13,7 @@ public class PojoRandomGenerator {
         // }
     private RandomAnnotationPojoProcessor pojoProcessor;
     public PojoRandomGenerator() {
-        pojoProcessor = new RandomAnnotationPojoProcessor();
+        pojoProcessor = RandomAnnotationPojoProcessor.builder().build();
     }
 
 

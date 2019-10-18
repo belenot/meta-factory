@@ -11,10 +11,7 @@ import com.belenot.util.pojo.support.ValueHolder;
 
 public class RandomAnnotationPojoProcessor implements PojoProcessor {
     private List<FieldValueGenerator> fieldValueGeneratorRegistry = new ArrayList<>();
-    {
-        fieldValueGeneratorRegistry.add(new DelegatingFieldProcessor());
-        fieldValueGeneratorRegistry.add(new NumberFieldValueGenerator());
-    }
+    private RandomAnnotationPojoProcessor() { }
 
     @Override
     public <T> T process(T pojo) {
@@ -58,18 +55,28 @@ public class RandomAnnotationPojoProcessor implements PojoProcessor {
         field.setAccessible(accessible);
     }
 
-    // private <T> FieldValueGenerator<T> filterFieldValueGenerator(Class<T> clazz) {
-    //     for (FieldValueGenerator<?> generator : fieldValueGeneratorRegistry) {
-    //         for (TypeVariable<?> parameterType : generator.getClass().getTypeParameters()) {
-    //             if (parameterType.getBounds()[0] != null) {
+    public static Builder builder() {
+        return new RandomAnnotationPojoProcessor().new Builder();
+    }
 
-    //             }
-    //         }
-    //     }
-    //     return null;
-    // }
-
-
-    
-    
+    public class Builder {
+        private Builder() {
+            fieldValueGeneratorRegistry.add(new DelegatingFieldProcessor());
+            fieldValueGeneratorRegistry.add(new NumberFieldValueGenerator());
+            fieldValueGeneratorRegistry.add(new StringFieldValueGenerator());
+        }
+        public Builder addFieldValueGenerator(FieldValueGenerator generator) {
+            fieldValueGeneratorRegistry.add(generator);
+            return this;
+        }
+        public Builder addFieldValueGenerators(FieldValueGenerator... generators) {
+            for (FieldValueGenerator generator : generators) {
+                fieldValueGeneratorRegistry.add(generator);
+            }
+            return this;
+        }
+        public RandomAnnotationPojoProcessor build() {
+            return RandomAnnotationPojoProcessor.this;
+        }
+    }
 }

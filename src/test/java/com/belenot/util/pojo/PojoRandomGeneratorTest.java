@@ -7,7 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.annotation.Random;
+import com.belenot.util.pojo.annotation.Random.RandomString;
+import com.belenot.util.pojo.annotation.Random.RandomString.AllowedAlphabet;
 import com.belenot.util.pojo.annotation.RandomValues.NumberValues;
+import com.belenot.util.pojo.annotation.RandomValues.StringValues;
 import com.belenot.util.pojo.processor.FieldValueGenerator;
 import com.belenot.util.pojo.support.ValueHolder;
 
@@ -39,6 +42,27 @@ public class PojoRandomGeneratorTest {
         ExpPojoDoubleValues pojo = generator.generate(ExpPojoDoubleValues.class);
         assertNotNull(pojo);
         assertTrue(pojo.getVal() >= 1 && pojo.getVal() <= 2);
+    }
+
+    @Test
+    public void testStringField() {
+        ExpPojoStringField pojo = generator.generate(ExpPojoStringField.class);
+        assertNotNull(pojo);
+        assertTrue(pojo.getVal().length() > 0);
+    }
+
+    @Test
+    public void testStringValuesField() {
+        ExpPojoStringValuesField pojo = generator.generate(ExpPojoStringValuesField.class);
+        assertNotNull(pojo);
+        assertTrue(pojo.getVal().equals("lol") || pojo.getVal().equals("kek") || pojo.getVal().equals("cheburek"));
+    }
+    @Test
+    public void testRandomString() {
+        ExpPojoRandomString pojo = generator.generate(ExpPojoRandomString.class);
+        assertNotNull(pojo);
+        assertNotNull(pojo.getVal());
+        assertTrue(pojo.getVal().length() >= 10 && pojo.getVal().length() <= 15);
     }
 
     @Test
@@ -127,5 +151,45 @@ public class PojoRandomGeneratorTest {
             return false;
         }
         
+    }
+
+    public static class ExpPojoStringField {
+        @Random
+        private String val;
+
+		public String getVal() {
+			return val;
+		}
+
+		public void setVal(String val) {
+			this.val = val;
+		}
+    }
+    public static class ExpPojoStringValuesField {
+        @Random
+        @StringValues({"lol", "kek", "cheburek"})
+        private String val;
+
+        public String getVal() {
+            return val;
+        }
+
+        public void setVal(String val) {
+            this.val = val;
+        }
+    }
+
+    public static class ExpPojoRandomString {
+        @Random
+        @RandomString(minLength = 10, maxLength = 15, allowedAlphabet = AllowedAlphabet.ONLY_LETTERS)
+        private String val;
+
+        public String getVal() {
+            return val;
+        }
+
+        public void setVal(String val) {
+            this.val = val;
+        }
     }
 }
