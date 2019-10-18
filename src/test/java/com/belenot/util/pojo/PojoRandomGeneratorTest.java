@@ -8,7 +8,8 @@ import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.annotation.Random;
 import com.belenot.util.pojo.annotation.RandomValues.NumberValues;
-import com.belenot.util.pojo.processor.FieldProcessor;
+import com.belenot.util.pojo.processor.FieldValueGenerator;
+import com.belenot.util.pojo.support.ValueHolder;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ public class PojoRandomGeneratorTest {
     }
 
     public static class ExpPojoCustomProcessor {
-        @Random(processor = CustomFieldProcessor.class)
+        @Random(valueGenerator = CustomFieldValueGenerator.class)
         private Integer val;
 
         public int getVal() {
@@ -107,19 +108,15 @@ public class PojoRandomGeneratorTest {
         }
     }
 
-    public static class CustomFieldProcessor implements FieldProcessor {
-
+    public static class CustomFieldValueGenerator implements FieldValueGenerator {
         @Override
-        public Field process(Object pojo, Field field) throws IllegalAccessException {
-            boolean accessible = field.isAccessible();
-            field.setAccessible(true);
+        public ValueHolder generate(Field field) {
             if (field.getType().equals(Integer.class)) {
-                field.set(pojo, Integer.valueOf(42));
+                return new ValueHolder(Integer.valueOf(42));
             } else if (field.getType().equals(int.class)) {
-                field.setInt(pojo, 42);
+                return new ValueHolder(42);
             }
-            field.setAccessible(accessible);
-            return field;
+            return ValueHolder.empty();
         }
 
         @Override

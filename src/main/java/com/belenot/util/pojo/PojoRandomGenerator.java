@@ -1,6 +1,6 @@
 package com.belenot.util.pojo;
 
-import com.belenot.util.pojo.processor.RandomAnnotationProcessor;
+import com.belenot.util.pojo.processor.RandomAnnotationPojoProcessor;
 
 public class PojoRandomGenerator {
     // private List<PojoProcessor> pojoProcessorRegistry = new ArrayList<>();
@@ -11,9 +11,9 @@ public class PojoRandomGenerator {
         // {
         //     addProcessorFactory(new RandomAnnotationProcessorFactory());
         // }
-    private RandomAnnotationProcessor pojoProcessor;
+    private RandomAnnotationPojoProcessor pojoProcessor;
     public PojoRandomGenerator() {
-        pojoProcessor = new RandomAnnotationProcessor();
+        pojoProcessor = new RandomAnnotationPojoProcessor();
     }
 
 
@@ -30,6 +30,6 @@ public class PojoRandomGenerator {
     }
 
     private <T> T processAnnotations(T pojo, Class<T> clazz) {
-        return pojoProcessor.process(pojo, clazz);
+        return pojoProcessor.process(pojo);
     }
 }

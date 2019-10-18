@@ -3,21 +3,18 @@ package com.belenot.util.pojo.processor;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class NumberFieldProcessor implements FieldProcessor {
+import com.belenot.util.pojo.support.ValueHolder;
+
+public class NumberFieldValueGenerator implements FieldValueGenerator {
     private NumberValuesProcessor numberValuesProcessor = new NumberValuesProcessor();
 
     @Override
-    public Field process(Object pojo, Field field) throws IllegalAccessException {
-        boolean accessable = field.isAccessible();
-        field.setAccessible(true);
+    public ValueHolder generate(Field field) {
         if (numberValuesProcessor.support(field)) {
-            numberValuesProcessor.process(pojo, field);
+            return numberValuesProcessor.generate(field);
         } else {
-            setRandomInt(pojo, field);
+            return new ValueHolder((int)Math.random()*Integer.MAX_VALUE);
         }
-        
-        field.setAccessible(accessable);
-        return field;
     }
 
     @Override

@@ -3,35 +3,34 @@ package com.belenot.util.pojo.processor;
 import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.annotation.RandomValues.NumberValues;
+import com.belenot.util.pojo.support.ValueHolder;
 
-public class NumberValuesProcessor implements FieldProcessor {
+public class NumberValuesProcessor implements FieldValueGenerator {
 
     @Override
-    public Field process(Object pojo, Field field) throws IllegalAccessException {
-        boolean accessible = field.isAccessible();
-        field.setAccessible(true);
+    public ValueHolder generate(Field field) {
         double[] values = field.getAnnotation(NumberValues.class).value();
         int index = (int)(Math.random() * values.length);
         if (field.getType().equals(int.class)) {
-            field.setInt(pojo, (int)values[index]);
+            return new ValueHolder((int)values[index]);
         } else if (field.getType().equals(Integer.class)) {
-            field.set(pojo, Integer.valueOf((int)values[index]));
+            return new ValueHolder(Integer.valueOf((int)values[index]));
         } else if (field.getType().equals(double.class)) {
-            field.setDouble(pojo, values[index]);
+            return new ValueHolder((double)values[index]);
         } else if (field.getType().equals(Double.class)) {
-            field.set(pojo, Double.valueOf(values[index]));
+            return new ValueHolder(Double.valueOf((double)values[index]));
         } else if (field.getType().equals(long.class)) {
-            field.setLong(pojo, (long)values[index]);
+            return new ValueHolder((long)values[index]);
         } else if (field.getType().equals(Long.class)) {
-            field.set(pojo, Long.valueOf((long)values[index]));
+            return new ValueHolder(Long.valueOf((long)values[index]));
+        } else {
+            return ValueHolder.empty();
         }
-        field.setAccessible(accessible);
-        return field;
     }
 
     @Override
     public boolean support(Field field) {    
-        return field.getAnnotation(NumberValues.class) != null && NumberFieldProcessor.isNumberType(field);
+        return field.getAnnotation(NumberValues.class) != null && NumberFieldValueGenerator.isNumberType(field);
     }
     
 }
