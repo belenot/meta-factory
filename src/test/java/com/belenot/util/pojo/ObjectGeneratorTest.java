@@ -6,13 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.belenot.util.pojo.annotation.Generated;
 import com.belenot.util.pojo.generator.Generator;
-import com.belenot.util.pojo.generator.support.RandomNumberGenerator;
 import com.belenot.util.pojo.generator.support.RandomCollectionGenerator.RandomCollection;
+import com.belenot.util.pojo.generator.support.RandomMapGenerator.RandomMap;
+import com.belenot.util.pojo.generator.support.RandomNumberGenerator;
 import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
+import com.belenot.util.pojo.generator.support.RandomStringGenerator;
 import com.belenot.util.pojo.generator.support.RandomStringGenerator.RandomString;
 
 import org.junit.jupiter.api.Test;
@@ -56,6 +60,14 @@ public class ObjectGeneratorTest {
         assertNotNull(pojo);
         assertTrue(pojo.getValue().size() >=15 && pojo.getValue().size() <= 20);
         assertTrue(pojo.getValue().get(0).getClass().equals(Integer.class));
+    }
+
+    @Test
+    public void genObjectShouldRandomMap() {
+        PojoWithRandomMap pojo = assertDoesNotThrow(()->gen(PojoWithRandomMap.class));
+        assertNotNull(pojo);
+        assertTrue(pojo.getValue().size() >=10 && pojo.getValue().size() <= 30);
+        assertTrue(pojo.getValue().entrySet().size() > 0);
     }
 }
 
@@ -105,4 +117,13 @@ class PojoWithRandomIntCollection {
     private List<Integer> value;
     public List<Integer> getValue() { return value; }
     public void setValue(List<Integer> value) { this.value = value; }
+}
+
+class PojoWithRandomMap {
+    @RandomMap(impl = HashMap.class, item = Integer.class, key = String.class, minSize = 10, maxSize = 30,
+                itemGenerator = RandomNumberGenerator.class, keyGenerator = RandomStringGenerator.class )
+    private Map<String, Integer> value;
+    public Map<String, Integer> getValue() { return value; }
+    public void setValue(Map<String, Integer> value) { this.value = value; }
+    
 }

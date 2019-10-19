@@ -27,6 +27,11 @@ public class Info {
         attributes = info.getAttributes();
     }
 
+    public Info(Class<?> type, Map<String, Object> attributes) {
+        this.type = type;
+        this.attributes = attributes;
+    }
+
     public Place getPlace() {
         return place;
     }
