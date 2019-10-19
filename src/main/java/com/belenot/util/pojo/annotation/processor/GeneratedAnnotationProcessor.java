@@ -18,6 +18,7 @@ public class GeneratedAnnotationProcessor {
 
     private void processFields(Object object, Field[] fields) {
         for (Field field : fields) {
+            // if field annotated with @Generated
             if (field.isAnnotationPresent(Generated.class)) {
                 Generated genAnnotation = field.getDeclaredAnnotation(Generated.class);
                 Place place = new Place(object.getClass(), object, field);
@@ -25,7 +26,8 @@ public class GeneratedAnnotationProcessor {
                 Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
                 Object value = generator.generate(info);
                 setValue(object, field, value);
-            }
+            } 
+            // if field is annotatated with meta annotations of @Generated
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation.annotationType().isAnnotationPresent(Generated.class)) {
                     Generated genAnnotation = annotation.annotationType().getDeclaredAnnotation(Generated.class);

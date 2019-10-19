@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.belenot.util.pojo.annotation.Generated;
 import com.belenot.util.pojo.generator.Generator;
 import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
+import com.belenot.util.pojo.generator.support.RandomStringGenerator.RandomString;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,6 +36,14 @@ public class ObjectGeneratorTest {
         PojoWithRandomInt pojo = assertDoesNotThrow(() -> gen(PojoWithRandomInt.class));
         assertNotNull(pojo);
         assertTrue(pojo.getValue() >= 5 && pojo.getValue() <= 10);
+    }
+
+    @Test
+    public void genObjectShouldRandomString() {
+        PojoWithRandomString pojo = assertDoesNotThrow(()->gen(PojoWithRandomString.class));
+        assertNotNull(pojo);
+        assertTrue(pojo.getValue().length() >= 10 && pojo.getValue().length() <= 20);
+        assertTrue(pojo.getValue().chars().allMatch(c->c=='1'||c=='2'||c=='3'));
     }
 }
 
@@ -75,4 +84,11 @@ class PojoWithRandomInt {
     private int value = 0;
     public int getValue() { return value; }
     public void setValue(int value) { this.value = value; }
+}
+
+class PojoWithRandomString {
+    @RandomString(alphabet = "123", maxLength = 20, minLength = 10)
+    private String value;
+    public String getValue() { return value; }
+    public void setValue(String value) { this.value = value; }
 }
