@@ -4,5 +4,5 @@ import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;
 
 public interface Generator {
-    Object generate(Place place, Info info);
+    Object generate(Info info);
 }

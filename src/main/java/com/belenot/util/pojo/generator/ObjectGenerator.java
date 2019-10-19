@@ -1,4 +1,4 @@
-package com.belenot.util.pojo.annotation;
+package com.belenot.util.pojo.generator;
 
 import com.belenot.util.pojo.annotation.processor.GeneratedAnnotationProcessor;
 

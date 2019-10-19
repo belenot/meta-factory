@@ -1,11 +1,13 @@
 package com.belenot.util.pojo.annotation.processor;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;
 import com.belenot.util.pojo.annotation.Generated;
 import com.belenot.util.pojo.generator.Generator;
+import com.belenot.util.pojo.informator.Informator;
 
 import org.junit.platform.commons.util.ReflectionUtils;
 
@@ -16,13 +18,31 @@ public class GeneratedAnnotationProcessor {
 
     private void processFields(Object object, Field[] fields) {
         for (Field field : fields) {
-            Generated annotation = field.getDeclaredAnnotation(Generated.class);
-            if (annotation != null) {
+            if (field.isAnnotationPresent(Generated.class)) {
+                Generated genAnnotation = field.getDeclaredAnnotation(Generated.class);
                 Place place = new Place(object.getClass(), object, field);
-                Info info = new Info(place, annotation);
-                Generator generator = ReflectionUtils.newInstance(annotation.value());
-                Object value = generator.generate(place, info);
+                Info info = new Info(place, genAnnotation);
+                Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
+                Object value = generator.generate(info);
                 setValue(object, field, value);
+            }
+            for (Annotation annotation : field.getDeclaredAnnotations()) {
+                if (annotation.annotationType().isAnnotationPresent(Generated.class)) {
+                    Generated genAnnotation = annotation.annotationType().getDeclaredAnnotation(Generated.class);
+                    Place place = new Place(object.getClass(), object, field);
+                    Informator informator = ReflectionUtils.newInstance(genAnnotation.informator());
+                    Info info = informator.informate(genAnnotation);
+                    if (info == null || info.getAttributes() == null)  {
+                        info = new Info(place, annotation);
+                    } else {
+                        info = new Info(place, annotation, info.getAttributes());
+                    }
+                    info.setAnnotation(annotation);
+                    info.setPlace(place);
+                    Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
+                    Object value = generator.generate(info);
+                    setValue(object, field, value);
+                }
             }
         }
     }
