@@ -7,6 +7,7 @@ import java.util.Map;
 public class Info {
     private Place place;
     private Annotation annotation;
+    private Class<?> type;
     private Map<String, Object> attributes = new HashMap<>();
 
     public Info() { }
@@ -18,6 +19,12 @@ public class Info {
         this.place = place;
         this.annotation = annotation;
         this.attributes = attributes;
+    }
+
+    public Info(Info info) {
+        place = info.getPlace();
+        annotation = info.getAnnotation();
+        attributes = info.getAttributes();
     }
 
     public Place getPlace() {
@@ -42,6 +49,14 @@ public class Info {
 
     public void setAnnotation(Annotation annotation) {
         this.annotation = annotation;
+    }
+
+    public Class<?> getType() {
+        return type;
+    }
+
+    public void setType(Class<?> type) {
+        this.type = type;
     }
     
 }

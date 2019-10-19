@@ -27,7 +27,11 @@ public class RandomNumberGenerator implements Generator {
             min = randomNumber.min();
             max = randomNumber.max();
         }
+        Class<?> type = info.getType();
         double value = (Math.random() * (max - min) + min);
+        if (type != null && Number.class.isAssignableFrom(type)) {
+            return wrapValue(value, type);
+        }
         return returnValue(value, (Field)info.getPlace().getAccessibleObject());
     }
 
@@ -38,5 +42,14 @@ public class RandomNumberGenerator implements Generator {
         if (field.getType().equals(float.class)) return (float)value;
         if (field.getType().equals(long.class)) return (long)value;
         return value;
+    }
+
+    private Object wrapValue(double value, Class<?> clazz) {
+        if (clazz.equals(Byte.class)) return Byte.valueOf((byte)value);
+        if (clazz.equals(Short.class)) return Short.valueOf((short)value);
+        if (clazz.equals(Integer.class)) return Integer.valueOf((int)value);
+        if (clazz.equals(Float.class)) return Float.valueOf((float)value);
+        if (clazz.equals(Long.class)) return Long.valueOf((long)value);
+        return Double.valueOf(value);
     }
 }

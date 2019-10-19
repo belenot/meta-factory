@@ -6,8 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import com.belenot.util.pojo.annotation.Generated;
 import com.belenot.util.pojo.generator.Generator;
+import com.belenot.util.pojo.generator.support.RandomNumberGenerator;
+import com.belenot.util.pojo.generator.support.RandomCollectionGenerator.RandomCollection;
 import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
 import com.belenot.util.pojo.generator.support.RandomStringGenerator.RandomString;
 
@@ -45,6 +49,14 @@ public class ObjectGeneratorTest {
         assertTrue(pojo.getValue().length() >= 10 && pojo.getValue().length() <= 20);
         assertTrue(pojo.getValue().chars().allMatch(c->c=='1'||c=='2'||c=='3'));
     }
+
+    @Test
+    public void genObjectShouldRandomIntCollection() {
+        PojoWithRandomIntCollection pojo = assertDoesNotThrow(()->gen(PojoWithRandomIntCollection.class));
+        assertNotNull(pojo);
+        assertTrue(pojo.getValue().size() >=15 && pojo.getValue().size() <= 20);
+        assertTrue(pojo.getValue().get(0).getClass().equals(Integer.class));
+    }
 }
 
 class SimplePojo {
@@ -60,6 +72,8 @@ class PojoWithGenInt {
     private Integer objectValue = 0;
     public int getValue() { return value; }
     public void setValue(int value) { this.value = value; }
+    public Integer getObjectValue() { return objectValue; }
+    public void setObjectValue(Integer objectValue) { this.objectValue = objectValue; }
 
     static class IntGenerator implements Generator {
 
@@ -70,13 +84,6 @@ class PojoWithGenInt {
         
     }
 
-    public Integer getObjectValue() {
-        return objectValue;
-    }
-
-    public void setObjectValue(Integer objectValue) {
-        this.objectValue = objectValue;
-    }
 }
 
 class PojoWithRandomInt {
@@ -91,4 +98,11 @@ class PojoWithRandomString {
     private String value;
     public String getValue() { return value; }
     public void setValue(String value) { this.value = value; }
+}
+
+class PojoWithRandomIntCollection {
+    @RandomCollection(maxSize = 20, minSize = 15, itemGenerator = RandomNumberGenerator.class, itemType = Integer.class)
+    private List<Integer> value;
+    public List<Integer> getValue() { return value; }
+    public void setValue(List<Integer> value) { this.value = value; }
 }

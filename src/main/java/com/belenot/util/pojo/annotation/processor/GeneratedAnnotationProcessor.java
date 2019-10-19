@@ -41,6 +41,7 @@ public class GeneratedAnnotationProcessor {
                     }
                     info.setAnnotation(annotation);
                     info.setPlace(place);
+                    info.setType(getWrapper(field.getType()));
                     Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
                     Object value = generator.generate(info);
                     setValue(object, field, value);
@@ -76,6 +77,17 @@ public class GeneratedAnnotationProcessor {
             throw new GenerationException(exc);
         }
     }
+
+    private Class<?> getWrapper(Class<?> clazz) {
+        if (clazz.equals(boolean.class)) return Boolean.FALSE.getClass();
+        if (clazz.equals(short.class)) return Short.valueOf((short)0).getClass();
+        if (clazz.equals(char.class)) return Character.valueOf((char)0).getClass();
+        if (clazz.equals(int.class)) return Integer.valueOf(0).getClass();
+        if (clazz.equals(long.class)) return Long.valueOf(0L).getClass();
+        if (clazz.equals(float.class)) return Float.valueOf((float)0).getClass();
+        if (clazz.equals(double.class)) return Double.valueOf((double)0).getClass();
+        return clazz;
+    }
 }
 
 class GenerationException extends RuntimeException {
@@ -86,3 +98,4 @@ class GenerationException extends RuntimeException {
         super(throwable);
     }
 }
+
