@@ -21,8 +21,8 @@ public class GeneratedAnnotationProcessor {
             // if field annotated with @Generated
             if (field.isAnnotationPresent(Generated.class)) {
                 Generated genAnnotation = field.getDeclaredAnnotation(Generated.class);
-                Place place = new Place(object.getClass(), object, field);
-                Info info = new Info(place, genAnnotation);
+                Place place = Place.of(object, field);
+                Info info = Info.builder().place(place).annotation(genAnnotation).build();
                 Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
                 Object value = generator.generate(info);
                 setValue(object, field, value);
@@ -31,17 +31,10 @@ public class GeneratedAnnotationProcessor {
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation.annotationType().isAnnotationPresent(Generated.class)) {
                     Generated genAnnotation = annotation.annotationType().getDeclaredAnnotation(Generated.class);
-                    Place place = new Place(object.getClass(), object, field);
-                    Informator informator = ReflectionUtils.newInstance(genAnnotation.informator());
-                    Info info = informator.informate(genAnnotation);
-                    if (info == null || info.getAttributes() == null)  {
-                        info = new Info(place, annotation);
-                    } else {
-                        info = new Info(place, annotation, info.getAttributes());
-                    }
-                    info.setAnnotation(annotation);
-                    info.setPlace(place);
-                    info.setType(getWrapper(field.getType()));
+                    Place place = Place.of(object, field);
+                    // Informator informator = ReflectionUtils.newInstance(genAnnotation.informator());
+                    // Info info = informator.informate(genAnnotation);
+                    Info info = Info.builder().annotation(annotation).place(place).type(getWrapper(field.getType())).build();
                     Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
                     Object value = generator.generate(info);
                     setValue(object, field, value);

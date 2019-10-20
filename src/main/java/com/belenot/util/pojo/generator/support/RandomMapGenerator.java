@@ -1,5 +1,6 @@
 package com.belenot.util.pojo.generator.support;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,6 +11,7 @@ import java.util.Map;
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.annotation.Generated;
 import com.belenot.util.pojo.generator.Generator;
+import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
 
 public class RandomMapGenerator implements Generator {
 
@@ -24,6 +26,7 @@ public class RandomMapGenerator implements Generator {
         Class<? extends Map> impl() default HashMap.class;
         Class<?> item() default Object.class;
         Class<?> key() default Object.class;
+        // Annotation itemA() default @RandomNumber;
     }
 
     @Override
@@ -37,8 +40,8 @@ public class RandomMapGenerator implements Generator {
             Generator keyGenerator = randomMap.keyGenerator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
             Map impl = randomMap.impl().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
             for (int i = 0; i < size; i++) {
-                Info itemInfo = new Info(randomMap.item(), Map.of("map", impl));
-                Info keyInfo = new Info(randomMap.key(), Map.of("map", impl));
+                Info itemInfo = Info.builder().type(randomMap.item()).attr("map", impl).build();
+                Info keyInfo = Info.builder().type(randomMap.key()).attr("map", impl).build();
                 Object item = itemGenerator.generate(itemInfo);
                 Object key = keyGenerator.generate(keyInfo);
                 impl.put(key, item);

@@ -7,34 +7,31 @@ public class Place {
     private Object object;
     private AccessibleObject accessibleObject;
 
-    public Place() { }
-    public Place(Class<?> clazz, Object object, AccessibleObject accessibleObject) {
-        this.clazz = clazz;
-        this.object = object;
-        this.accessibleObject = accessibleObject;
+    private Place() { }
+    public Class<?> getClazz() { return clazz; }
+    public Object getObject() { return object; }
+    public AccessibleObject getAccessibleObject() { return accessibleObject; }
+
+    public static Place of(Object object, AccessibleObject accessibleObject) {
+        Place place = new Place();
+        place.clazz = object.getClass();
+        place.object = object;
+        place.accessibleObject = accessibleObject;
+        return place;
     }
 
-    public Class<?> getClazz() {
-        return clazz;
+    public static Place of(Class<?> clazz, AccessibleObject accessibleObject) {
+        Place place = new Place();
+        place.clazz = clazz;
+        place.accessibleObject = accessibleObject;
+        return place;
     }
 
-    public void setClazz(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-
-    public Object getObject() {
-        return object;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public AccessibleObject getAccessibleObject() {
-        return accessibleObject;
-    }
-
-    public void setAccessibleObject(AccessibleObject accessibleObject) {
-        this.accessibleObject = accessibleObject;
+    public static Place of(Place copy) {
+        Place place = new Place();
+        place.clazz = copy.getClazz();
+        place.object = copy.getObject();
+        place.accessibleObject = copy.getAccessibleObject();
+        return place;
     }
 }

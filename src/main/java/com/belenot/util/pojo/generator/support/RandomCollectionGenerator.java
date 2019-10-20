@@ -47,10 +47,7 @@ public class RandomCollectionGenerator implements Generator {
         if (itemGenerator != null) {
             int size = (int)(Math.random() * (maxSize - minSize) + minSize);
             for (int i = 0; i < size; i++) {
-                Info itemInfo = new Info(info);
-                itemInfo.setAttributes(new HashMap<>());
-                itemInfo.getAttributes().put("collection", impl);
-                itemInfo.setType(type);
+                Info itemInfo = Info.builder().from(info).attr("collection", impl).type(type).build();
                 impl.add(itemGenerator.generate(itemInfo));
             }
             return impl;
