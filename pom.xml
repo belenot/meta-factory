@@ -2,11 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.belenot.util.pojo</groupId>
-  <artifactId>pojo-generator</artifactId>
+  <artifactId>meta-factory</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
-  <name>pojo-generator</name>
-  <url>http://maven.apache.org</url>
+  <version>1.0.0</version>
+  <name>meta-factory</name>
  <properties>
     <junit-version>5.5.2</junit-version>
   </properties>
