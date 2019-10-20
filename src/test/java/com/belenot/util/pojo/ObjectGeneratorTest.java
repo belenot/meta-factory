@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.belenot.util.pojo.annotation.Generated;
-import com.belenot.util.pojo.generator.Generator;
-import com.belenot.util.pojo.generator.support.RandomCollectionGenerator.RandomCollection;
-import com.belenot.util.pojo.generator.support.RandomMapGenerator.RandomMap;
-import com.belenot.util.pojo.generator.support.RandomNumberGenerator;
-import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
-import com.belenot.util.pojo.generator.support.RandomStringGenerator;
-import com.belenot.util.pojo.generator.support.RandomStringGenerator.RandomString;
+import com.belenot.util.pojo.annotation.Factoried;
+import com.belenot.util.pojo.generator.AbstractFactory;
+import com.belenot.util.pojo.generator.support.RandomCollectionFactory.RandomCollection;
+import com.belenot.util.pojo.generator.support.RandomMapFactory.RandomMap;
+import com.belenot.util.pojo.generator.support.RandomNumberFactory;
+import com.belenot.util.pojo.generator.support.RandomNumberFactory.RandomNumber;
+import com.belenot.util.pojo.generator.support.RandomStringFactory;
+import com.belenot.util.pojo.generator.support.RandomStringFactory.RandomString;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -78,16 +78,16 @@ class SimplePojo {
 }
 
 class PojoWithGenInt {
-    @Generated(IntGenerator.class)
+    @Factoried(IntGenerator.class)
     private int value = 0;
-    @Generated(IntGenerator.class)
+    @Factoried(IntGenerator.class)
     private Integer objectValue = 0;
     public int getValue() { return value; }
     public void setValue(int value) { this.value = value; }
     public Integer getObjectValue() { return objectValue; }
     public void setObjectValue(Integer objectValue) { this.objectValue = objectValue; }
 
-    static class IntGenerator implements Generator {
+    static class IntGenerator implements AbstractFactory {
 
         @Override
         public Object generate(Info info) {
@@ -113,7 +113,7 @@ class PojoWithRandomString {
 }
 
 class PojoWithRandomIntCollection {
-    @RandomCollection(maxSize = 20, minSize = 15, itemGenerator = RandomNumberGenerator.class, itemType = Integer.class)
+    @RandomCollection(maxSize = 20, minSize = 15, itemGenerator = RandomNumberFactory.class, itemType = Integer.class)
     private List<Integer> value;
     public List<Integer> getValue() { return value; }
     public void setValue(List<Integer> value) { this.value = value; }
@@ -121,7 +121,7 @@ class PojoWithRandomIntCollection {
 
 class PojoWithRandomMap {
     @RandomMap(impl = HashMap.class, item = Integer.class, key = String.class, minSize = 10, maxSize = 30,
-                itemGenerator = RandomNumberGenerator.class, keyGenerator = RandomStringGenerator.class )
+                itemGenerator = RandomNumberFactory.class, keyGenerator = RandomStringFactory.class )
     private Map<String, Integer> value;
     public Map<String, Integer> getValue() { return value; }
     public void setValue(Map<String, Integer> value) { this.value = value; }

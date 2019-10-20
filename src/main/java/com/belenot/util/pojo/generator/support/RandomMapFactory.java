@@ -9,20 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.belenot.util.pojo.Info;
-import com.belenot.util.pojo.annotation.Generated;
-import com.belenot.util.pojo.generator.Generator;
-import com.belenot.util.pojo.generator.support.RandomNumberGenerator.RandomNumber;
+import com.belenot.util.pojo.annotation.Factoried;
+import com.belenot.util.pojo.generator.AbstractFactory;
+import com.belenot.util.pojo.generator.support.RandomNumberFactory.RandomNumber;
 
-public class RandomMapGenerator implements Generator {
+public class RandomMapFactory implements AbstractFactory<Map> {
 
-    @Generated(RandomMapGenerator.class)
+    @Factoried(RandomMapFactory.class)
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface RandomMap {
         int maxSize() default 10;
         int minSize() default 1;
-        Class<? extends Generator> itemGenerator();
-        Class<? extends Generator> keyGenerator();
+        Class<? extends AbstractFactory> itemGenerator();
+        Class<? extends AbstractFactory> keyGenerator();
         Class<? extends Map> impl() default HashMap.class;
         Class<?> item() default Object.class;
         Class<?> key() default Object.class;
@@ -30,14 +30,14 @@ public class RandomMapGenerator implements Generator {
     }
 
     @Override
-    public Object generate(Info info) {
+    public Map generate(Info info) {
         try {
             if (!(info.getAnnotation() instanceof RandomMap)) return null;
             RandomMap randomMap = (RandomMap)info.getAnnotation();
             int size = (int)(Math.random() *(randomMap.maxSize() - randomMap.minSize())+ randomMap.minSize());
             size = size < 0 ? 10 : size;
-            Generator itemGenerator = randomMap.itemGenerator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
-            Generator keyGenerator = randomMap.keyGenerator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
+            AbstractFactory itemGenerator = randomMap.itemGenerator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
+            AbstractFactory keyGenerator = randomMap.keyGenerator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
             Map impl = randomMap.impl().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
             for (int i = 0; i < size; i++) {
                 Info itemInfo = Info.builder().type(randomMap.item()).attr("map", impl).build();

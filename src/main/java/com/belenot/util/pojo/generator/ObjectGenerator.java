@@ -1,13 +1,13 @@
 package com.belenot.util.pojo.generator;
 
-import com.belenot.util.pojo.annotation.processor.GeneratedAnnotationProcessor;
+import com.belenot.util.pojo.annotation.processor.FactoriedAnnotationProcessor;
 
 import org.junit.platform.commons.util.ReflectionUtils;
 
 public class ObjectGenerator {
     public static <T> T gen(Class<T> clazz) {
         T object = ReflectionUtils.newInstance(clazz);
-        GeneratedAnnotationProcessor processor = new GeneratedAnnotationProcessor();
+        FactoriedAnnotationProcessor processor = new FactoriedAnnotationProcessor();
         processor.process(object);
         return object;
     }

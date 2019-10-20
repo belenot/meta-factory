@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.belenot.util.pojo.Info;
-import com.belenot.util.pojo.annotation.Generated;
-import com.belenot.util.pojo.generator.Generator;
+import com.belenot.util.pojo.annotation.Factoried;
+import com.belenot.util.pojo.generator.AbstractFactory;
 
-public class RandomStringGenerator implements Generator {
+public class RandomStringFactory implements AbstractFactory<String> {
 
-    @Generated(RandomStringGenerator.class)
+    @Factoried(RandomStringFactory.class)
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface RandomString {
@@ -21,7 +21,7 @@ public class RandomStringGenerator implements Generator {
     }
 
     @Override
-    public Object generate(Info info) {
+    public String generate(Info info) {
         int maxLength = 10;
         int minLength = 1;
         String alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";

@@ -4,6 +4,6 @@ import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;
 
 @FunctionalInterface
-public interface Generator {
-    Object generate(Info info);
+public interface AbstractFactory<T> {
+    T generate(Info info);
 }

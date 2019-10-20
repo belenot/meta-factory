@@ -5,13 +5,13 @@ import java.lang.reflect.Field;
 
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;
-import com.belenot.util.pojo.annotation.Generated;
-import com.belenot.util.pojo.generator.Generator;
+import com.belenot.util.pojo.annotation.Factoried;
+import com.belenot.util.pojo.generator.AbstractFactory;
 import com.belenot.util.pojo.informator.Informator;
 
 import org.junit.platform.commons.util.ReflectionUtils;
 
-public class GeneratedAnnotationProcessor {
+public class FactoriedAnnotationProcessor {
     public void process(Object object) {
         processFields(object, object.getClass().getDeclaredFields());
     }
@@ -19,23 +19,23 @@ public class GeneratedAnnotationProcessor {
     private void processFields(Object object, Field[] fields) {
         for (Field field : fields) {
             // if field annotated with @Generated
-            if (field.isAnnotationPresent(Generated.class)) {
-                Generated genAnnotation = field.getDeclaredAnnotation(Generated.class);
+            if (field.isAnnotationPresent(Factoried.class)) {
+                Factoried genAnnotation = field.getDeclaredAnnotation(Factoried.class);
                 Place place = Place.of(object, field);
                 Info info = Info.builder().place(place).annotation(genAnnotation).build();
-                Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
+                AbstractFactory generator = ReflectionUtils.newInstance(genAnnotation.value());
                 Object value = generator.generate(info);
                 setValue(object, field, value);
             } 
             // if field is annotatated with meta annotations of @Generated
             for (Annotation annotation : field.getDeclaredAnnotations()) {
-                if (annotation.annotationType().isAnnotationPresent(Generated.class)) {
-                    Generated genAnnotation = annotation.annotationType().getDeclaredAnnotation(Generated.class);
+                if (annotation.annotationType().isAnnotationPresent(Factoried.class)) {
+                    Factoried genAnnotation = annotation.annotationType().getDeclaredAnnotation(Factoried.class);
                     Place place = Place.of(object, field);
                     // Informator informator = ReflectionUtils.newInstance(genAnnotation.informator());
                     // Info info = informator.informate(genAnnotation);
                     Info info = Info.builder().annotation(annotation).place(place).type(getWrapper(field.getType())).build();
-                    Generator generator = ReflectionUtils.newInstance(genAnnotation.value());
+                    AbstractFactory generator = ReflectionUtils.newInstance(genAnnotation.value());
                     Object value = generator.generate(info);
                     setValue(object, field, value);
                 }
