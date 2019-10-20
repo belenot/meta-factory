@@ -1,6 +1,6 @@
 # MetaFACTORY
 ## Prelude
-Such tools as Spring Framework is a great stuff, but actualy it is only on large projects.  
+Such tools as Spring Framework is a great stuff, but actualy it is only in large projects.  
 I think, it is because spring is both big and complex. It's trying to make by itself every thing you need to do.
 On the other hand JS has very much libraries, which are little in size and are easier to learn. These libraries are used for what they were created for, and hence, can be combined pretty painless.
 ## Overview

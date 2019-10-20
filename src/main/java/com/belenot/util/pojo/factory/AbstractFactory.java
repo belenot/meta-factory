@@ -1,4 +1,4 @@
-package com.belenot.util.pojo.generator;
+package com.belenot.util.pojo.factory;
 
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;

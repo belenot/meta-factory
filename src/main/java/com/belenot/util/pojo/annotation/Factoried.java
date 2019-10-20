@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.belenot.util.pojo.generator.AbstractFactory;
+import com.belenot.util.pojo.factory.AbstractFactory;
 import com.belenot.util.pojo.informator.Informator;
 import com.belenot.util.pojo.informator.support.DefaultInformator;
 

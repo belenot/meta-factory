@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.Place;
 import com.belenot.util.pojo.annotation.Factoried;
-import com.belenot.util.pojo.generator.AbstractFactory;
+import com.belenot.util.pojo.factory.AbstractFactory;
 import com.belenot.util.pojo.informator.Informator;
 
 import org.junit.platform.commons.util.ReflectionUtils;

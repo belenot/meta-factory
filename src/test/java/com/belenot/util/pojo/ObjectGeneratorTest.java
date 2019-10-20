@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.belenot.util.pojo.annotation.Factoried;
-import com.belenot.util.pojo.generator.AbstractFactory;
-import com.belenot.util.pojo.generator.support.RandomCollectionFactory.RandomCollection;
-import com.belenot.util.pojo.generator.support.RandomMapFactory.RandomMap;
-import com.belenot.util.pojo.generator.support.RandomNumberFactory;
-import com.belenot.util.pojo.generator.support.RandomNumberFactory.RandomNumber;
-import com.belenot.util.pojo.generator.support.RandomStringFactory;
-import com.belenot.util.pojo.generator.support.RandomStringFactory.RandomString;
+import com.belenot.util.pojo.factory.AbstractFactory;
+import com.belenot.util.pojo.factory.RandomNumberFactory;
+import com.belenot.util.pojo.factory.RandomStringFactory;
+import com.belenot.util.pojo.factory.RandomCollectionFactory.RandomCollection;
+import com.belenot.util.pojo.factory.RandomMapFactory.RandomMap;
+import com.belenot.util.pojo.factory.RandomNumberFactory.RandomNumber;
+import com.belenot.util.pojo.factory.RandomStringFactory.RandomString;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

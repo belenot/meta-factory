@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.belenot.util.pojo.annotation.Factoried;
-import com.belenot.util.pojo.generator.AbstractFactory;
+import com.belenot.util.pojo.factory.AbstractFactory;
 import com.belenot.util.pojo.generator.ObjectGenerator;
 
 import org.junit.jupiter.api.Test;

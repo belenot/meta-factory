@@ -1,4 +1,4 @@
-package com.belenot.util.pojo.generator.support;
+package com.belenot.util.pojo.factory;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -10,8 +10,7 @@ import java.util.Map;
 
 import com.belenot.util.pojo.Info;
 import com.belenot.util.pojo.annotation.Factoried;
-import com.belenot.util.pojo.generator.AbstractFactory;
-import com.belenot.util.pojo.generator.support.RandomNumberFactory.RandomNumber;
+import com.belenot.util.pojo.factory.RandomNumberFactory.RandomNumber;
 
 public class RandomMapFactory implements AbstractFactory<Map> {
 
