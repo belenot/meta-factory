@@ -4,7 +4,7 @@
   <groupId>com.belenot.util.pojo</groupId>
   <artifactId>meta-factory</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <name>meta-factory</name>
  <properties>
     <junit-version>5.5.2</junit-version>
