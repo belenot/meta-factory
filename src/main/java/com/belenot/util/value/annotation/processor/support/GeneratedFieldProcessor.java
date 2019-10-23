@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.belenot.util.value.ValueHolderDescriptor;
@@ -15,12 +16,21 @@ import com.belenot.util.value.generator.ValueGenerator;
 
 public class GeneratedFieldProcessor extends AbstractGeneratedElementProcessor<Field> {
 
+    // List<GeneratedFieldProcessor> processors 
+
     @Override
     protected ValueWrapper generateValue(Field field, Object object) {
         Generated annotation = field.getDeclaredAnnotation(Generated.class);
+        Map<String, Object> info = new HashMap<>();
+        if (annotation == null) {
+            Annotation metaAnnotation = Arrays.stream(field.getAnnotations()).filter(a->a.annotationType().isAnnotationPresent(Generated.class)).findFirst().get();
+            annotation = metaAnnotation.annotationType().getDeclaredAnnotation(Generated.class);
+            info.put("meta", metaAnnotation);
+        }
+        if (annotation == null) throw new IllegalArgumentException("Field should be annotated or meta-annotated via @Generated");
         try {
             ValueGenerator generator = annotation.generator().getConstructor(new Class<?>[0]).newInstance(new Object[0]);
-            Object value = generator.generate(new HashMap<String, Object>());
+            Object value = generator.generate(info);
             ValueWrapper valueWrapper = new FieldValueWrapper(value, object, field);
             return valueWrapper;
         } catch (Exception exc) {
@@ -75,7 +85,7 @@ public class GeneratedFieldProcessor extends AbstractGeneratedElementProcessor<F
         return false;
     }
 
-    private class FieldValueWrapper implements ValueWrapper {
+    protected class FieldValueWrapper implements ValueWrapper {
         private Object value;
         private Object object;
         private Field field;

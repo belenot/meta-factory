@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.belenot.util.value.tests.PojoWithIntValue;
+import com.belenot.util.value.tests.PojoWithMetaAnnotation;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,5 +22,14 @@ public class GeneratedProcessorTest {
         
         assertNotNull(pojo);
         assertTrue(pojo.getValue() > 0);
+    }
+
+    @Test
+    public void generateMetaAnnotated() {
+        PojoWithMetaAnnotation pojo = new PojoWithMetaAnnotation();
+        generatedProcessor.process(pojo);
+
+        assertNotNull(pojo);
+        assertTrue(pojo.getValue() >= 50 && pojo.getValue() <= 55);
     }
 }

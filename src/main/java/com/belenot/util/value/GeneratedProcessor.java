@@ -1,10 +1,10 @@
 package com.belenot.util.value;
 
-import com.belenot.util.value.annotation.processor.support.DelegatingGeneratedElementProcessor;
+import com.belenot.util.value.annotation.processor.support.GeneratedClassProcessor;
 import com.belenot.util.value.annotation.processor.support.GeneratedFieldProcessor;
 
 public class GeneratedProcessor {
-    private DelegatingGeneratedElementProcessor processor;
+    private GeneratedClassProcessor processor;
     {
         processor = processor.builder().processor(new GeneratedFieldProcessor()).build();
     }
