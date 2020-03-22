@@ -1,0 +1,10 @@
+.git
+.gradle
+gradle
+target
+build
+
+*~
+\#*\#
+\#*
+*\#
